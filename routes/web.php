@@ -22,5 +22,5 @@ Route::middleware(['auth', 'role:admin,super_admin'])->prefix('admin')->group(fu
 
     Route::resource('gallery', GalleryController::class)->except(['show']);
     Route::put('/gallery/{gallery}/restore', [GalleryController::class, 'restore'])->name('gallery.restore')->withTrashed();
-    Route::delete('/gallery/{gallery}/force-delete', [GalleryController::class, 'forceDelete'])->name('gallery.forceDelete')->withTrashed();
+    Route::patch('/gallery/{gallery}/status', [GalleryController::class, 'updateStatus'])->name('gallery.updateStatus');
 });

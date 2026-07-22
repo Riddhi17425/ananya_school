@@ -15,7 +15,6 @@ class GalleryController extends Controller
         $galleries = Gallery::withTrashed()->orderBy('sort_order')->orderByDesc('id')->get();
         return view('admin.gallery.index', compact('galleries'));
     }
-
     public function create()
     {
         return view('admin.gallery.create');
@@ -27,7 +26,7 @@ class GalleryController extends Controller
 
         $data           = $request->only(['title', 'description', 'alt_text', 'sort_order']);
         $data['type']   = $request->type;
-        $data['status'] = $request->has('status') ? 1 : 0;
+        $data['status'] = $request->status;
 
         if ($request->type === 'image') {
             $data['image_path'] = $this->uploadFile($request->file('image_path'), 'images');
@@ -61,7 +60,7 @@ class GalleryController extends Controller
 
         $data           = $request->only(['title', 'description', 'alt_text', 'sort_order']);
         $data['type']   = $request->type;
-        $data['status'] = $request->has('status') ? 1 : 0;
+        $data['status'] = $request->status;
 
         if ($request->type === 'image') {
             if ($request->hasFile('image_path')) {
@@ -174,15 +173,15 @@ class GalleryController extends Controller
         return redirect()->route('gallery.index')->with('toast_success', 'Gallery item restored.');
     }
 
-    public function forceDelete(Gallery $gallery)
+    public function updateStatus(Request $request, Gallery $gallery)
     {
-        $this->deleteFile($gallery->image_path);
-        $this->deleteFile($gallery->video_path);
-        $this->deleteFile($gallery->thumbnail_path);
+        $request->validate(['status' => 'required|in:0,1']);
+        $gallery->update(['status' => $request->status]);
 
-        $gallery->forceDelete();
-
-        return redirect()->route('gallery.index')->with('toast_success', 'Gallery item permanently deleted.');
+        return response()->json([
+            'success' => true,
+            'message' => $gallery->status ? 'Marked as Active.' : 'Marked as Inactive.',
+        ]);
     }
 
 }

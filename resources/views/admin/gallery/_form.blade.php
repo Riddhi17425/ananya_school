@@ -83,12 +83,13 @@
         <input type="number" name="sort_order" class="form-control" value="{{ old('sort_order', $gallery->sort_order ?? 0) }}">
     </div>
 
-    <div class="col-12 d-flex align-items-center mt-4 mb-2" style="gap: .5rem;">
-        <input class="form-check-input" type="checkbox" name="status" id="status" value="1"
-               style="width: 3em; height: 1.5em; cursor: pointer; margin: 0;"
-               {{ old('status', $gallery->status ?? true) ? 'checked' : '' }}>
-        <label class="form-check-label" for="status" style="cursor: pointer;">Active</label>
-    </div>
+    <div class="col-12 col-md-6">
+    <label class="form-label">Status</label>
+    <select name="status" class="form-select">
+        <option value="1" {{ old('status', $gallery->status ?? true) ? 'selected' : '' }}>Active</option>
+        <option value="0" {{ !old('status', $gallery->status ?? true) ? 'selected' : '' }}>Inactive</option>
+    </select>
+</div>
 
     <div class="col-12">
         <button type="submit" class="btn btn-primary">Save</button>

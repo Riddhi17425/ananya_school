@@ -104,7 +104,9 @@
                             <form action="{{ route('gallery.restore', $gallery->id) }}" method="POST" style="display:inline-block">
                                 @csrf
                                 @method('PUT')
-                                <button type="submit" class="btn btn-sm btn-success">Restore</button>
+                                 <button type="submit" class="btn btn-icon btn-outline-success" title="Restore">
+                                    <i class="bi bi-arrow-counterclockwise"></i>
+                                </button>
                             </form>
                         @else
                             <a href="{{ route('gallery.edit', $gallery->id) }}" class="btn btn-icon btn-outline-dark" title="Edit">

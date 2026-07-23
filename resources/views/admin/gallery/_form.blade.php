@@ -70,7 +70,7 @@
 
     <div class="col-12">
         <label class="form-label">Description</label>
-        <textarea name="description" class="form-control" rows="3">{{ old('description', $gallery->description ?? '') }}</textarea>
+        <textarea id="description" name="description" class="form-control summernote" rows="3">{{ old('description', $gallery->description ?? '') }}</textarea>
     </div>
 
     <div class="col-12 col-md-6">
@@ -97,6 +97,7 @@
     </div>
 </div>
 
+@push('scripts')
 <script>
     function toggleGalleryFields() {
         const type = document.getElementById('type').value;
@@ -110,7 +111,6 @@
         document.getElementById('upload-fields').style.display = (isVideo && mediaSource === 'upload') ? 'block' : 'none';
         document.getElementById('youtube-fields').style.display = (isVideo && mediaSource === 'youtube') ? 'block' : 'none';
 
-        // Media Type goes full-width when there's no Video Source column beside it
         const mediaTypeCol = document.getElementById('media-type-col');
         mediaTypeCol.classList.toggle('col-md-6', isVideo);
         mediaTypeCol.classList.toggle('col-12', !isVideo);
@@ -118,5 +118,23 @@
 
     document.getElementById('type').addEventListener('change', toggleGalleryFields);
     document.getElementById('media_source')?.addEventListener('change', toggleGalleryFields);
-    toggleGalleryFields(); // run once on load so edit page shows correct fields pre-filled
+    toggleGalleryFields();
+
+    $(function() {
+        $('#description').summernote({
+            placeholder: 'Enter description here...',
+            height: 200,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'italic', 'underline', 'clear']],
+                ['fontname', ['fontname']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']],
+                ['insert', ['link', 'picture', 'hr']],
+                ['view', ['fullscreen', 'codeview']],
+            ]
+        });
+    });
 </script>
+@endpush
